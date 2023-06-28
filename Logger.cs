@@ -13,34 +13,34 @@ namespace RainmeterSkinInstaller
         {
             if (!Verbose) return;
             Console.ForegroundColor = ConsoleColor.Red;
-            Console.WriteLine(message);
+            Console.WriteLine(";o; : " + message);
             Console.ResetColor();
         }
         public static void LogWarning(string message)
         {
             if (!Verbose) return;
             Console.ForegroundColor = ConsoleColor.Yellow;
-            Console.WriteLine(message);
+            Console.WriteLine("'~' : " + message);
             Console.ResetColor();
         }
         public static void LogInfo(string message)
         {
             if (!Verbose) return;
             Console.ForegroundColor = ConsoleColor.Cyan;
-            Console.WriteLine(message);
+            Console.WriteLine("'o' : " + message);
             Console.ResetColor();
         }
         public static void LogSuccess(string message)
         {
             if (!Verbose) return;
             Console.ForegroundColor = ConsoleColor.Green;
-            Console.WriteLine(message);
+            Console.WriteLine("'_' : " + message);
             Console.ResetColor();
         }
         public static void LogProgress(string message)
         {
             if (!Verbose) return;
-            Console.ForegroundColor = ConsoleColor.DarkGray;
+            Console.ForegroundColor = ConsoleColor.Gray;
             Console.WriteLine(message);
             Console.ResetColor();
         }

@@ -6,6 +6,8 @@ using System.IO.Compression;
 using CommandLine;
 using System.Text.RegularExpressions;
 using System.Diagnostics;
+using System.Reflection;
+using System.Security.Principal;
 
 namespace RainmeterSkinInstaller
 {
@@ -28,6 +30,14 @@ namespace RainmeterSkinInstaller
     }
     public class Program
     {
+        public static bool IsElevated
+        {
+            get
+            {
+                return new WindowsPrincipal(WindowsIdentity.GetCurrent()).IsInRole(WindowsBuiltInRole.Administrator);
+            }
+        }
+
         static void Main(string[] args)
         {
             Parser.Default.ParseArguments<Options>(args)
@@ -39,9 +49,13 @@ namespace RainmeterSkinInstaller
         {
             Logger.SetVerbose(options.Verbose);
 
-            Console.WriteLine("Rainmeter Skin Installer v1.0.0");
+            Logger.LogInfo("Rainmeter Skin Installer v" + Assembly.GetEntryAssembly().GetName().Version);
             Logger.LogInfo("Copyright (c) 2023 by deathcrafter");
             Logger.LogInfo("Originally for Droptop Four maintained by Cariboudjan");
+            if (IsElevated)
+            {
+                Logger.LogWarning("Running as administrator. This is not recommended.");
+            }
 
             Logger.LogInfo("\n================================================================\n");
 
@@ -225,7 +239,23 @@ namespace RainmeterSkinInstaller
             Logger.LogSuccess($"Successfully installed skins:\n    - {string.Join("\n    - ", skins)}");
 
             if (!options.NoRestart)
-                Rainmeter.StartRainmeter(loadSkin, loadName);
+                try
+                {
+                    Rainmeter.StartRainmeter(loadSkin, loadName);
+
+                }
+                catch
+                {
+                    Logger.LogError("Failed to start Rainmeter.");
+                    Logger.LogError("Please try starting Rainmeter manually.");
+                    if (loadSkin)
+                    {
+                        Logger.LogError("Load the skin: " + loadName + " to complete the installation");
+                    } else if (loadName != "")
+                    {
+                        Logger.LogError("Load the layout: " + loadName + " to complete the installation");
+                    }
+                }
         }
 
         static bool IsPluginVersionGreator(string newPlugin, string oldPlugin)
