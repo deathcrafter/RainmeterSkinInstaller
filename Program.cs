@@ -27,6 +27,9 @@ namespace RainmeterSkinInstaller
 
         [Option('x', "norestart", Required = false, HelpText = "Don't restart rainmeter after installation")]
         public bool NoRestart { get; set; }
+
+        [Option('e', "noexit", Required = false, Default = false, HelpText = "Don't exit after installation")]
+        public bool NoExit { get; set; }
     }
     public class Program
     {
@@ -251,11 +254,18 @@ namespace RainmeterSkinInstaller
                     if (loadSkin)
                     {
                         Logger.LogError("Load the skin: " + loadName + " to complete the installation");
-                    } else if (loadName != "")
+                    }
+                    else if (loadName != "")
                     {
                         Logger.LogError("Load the layout: " + loadName + " to complete the installation");
                     }
                 }
+
+            if (options.NoExit)
+            {
+                Logger.LogInfo("Press any key to exit...");
+                Console.ReadKey();
+            }
         }
 
         static bool IsPluginVersionGreator(string newPlugin, string oldPlugin)
