@@ -13,7 +13,7 @@ namespace RainmeterSkinInstaller
         {
             if (!Verbose) return;
             Console.ForegroundColor = ConsoleColor.Red;
-            Console.WriteLine(";o; : " + message);
+            Console.Error.WriteLine(";o; : " + message);
             Console.ResetColor();
         }
         public static void LogWarning(string message)
