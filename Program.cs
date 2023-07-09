@@ -67,12 +67,14 @@ namespace RainmeterSkinInstaller
             if (!File.Exists(skinPath))
             {
                 Logger.LogError("The specified skin does not exist.");
+                Environment.Exit(1);
                 return;
             }
 
             if (!Path.GetExtension(skinPath).Equals(".rmskin"))
             {
                 Logger.LogError("The specified skin is not a valid Rainmeter Skin Package.");
+                Environment.Exit(1);
                 return;
             }
 
@@ -80,6 +82,7 @@ namespace RainmeterSkinInstaller
             if (0 == rmSkinsPath.Length)
             {
                 Logger.LogError("Rainmeter skins path not avaialble.");
+                Environment.Exit(1);
                 return;
             }
 
@@ -89,6 +92,7 @@ namespace RainmeterSkinInstaller
             if (skinIni == null)
             {
                 Logger.LogError("The specified skin is not a valid RMSKIN file.");
+                Environment.Exit(1);
                 return;
             }
 
@@ -124,6 +128,7 @@ namespace RainmeterSkinInstaller
                 if (!Rainmeter.CloseRainmeter())
                 {
                     Logger.LogError("Failed to close Rainmeter.");
+                    Environment.Exit(1);
                     return;
                 }// close Rainmeter to avoid file locks
 
@@ -136,6 +141,7 @@ namespace RainmeterSkinInstaller
                     Logger.LogInfo("Trying to backup skin: " + skin);
                     if (!CreateBackup(skin, rmSkinsPath, !mergeSkins))
                     {
+                        Environment.Exit(1);
                         return;
                     }
                 }
@@ -209,6 +215,7 @@ namespace RainmeterSkinInstaller
                                 Logger.LogError(e.Message);
                                 Logger.LogError(e.StackTrace);
                                 RestoreBackup(skins, rmSkinsPath);
+                                Environment.Exit(1);
                                 return;
                             }
                         }
@@ -235,6 +242,7 @@ namespace RainmeterSkinInstaller
                 RestoreBackup(skins, rmSkinsPath);
                 Logger.LogSuccess("Restored backup.");
 
+                Environment.Exit(1);
                 return;
             }
             Logger.LogProgress("");
