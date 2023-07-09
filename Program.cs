@@ -66,7 +66,7 @@ namespace RainmeterSkinInstaller
 
             if (!File.Exists(skinPath))
             {
-                Logger.LogError("The specified skin does not exist.");
+                Logger.LogError("The specified skin does not exist at " + options.SkinPath);
                 Environment.Exit(1);
                 return;
             }
